@@ -1,5 +1,14 @@
-import { sql } from '@vercel/postgres';
+import dotenv from 'dotenv';
+import { resolve } from 'path';
+
+dotenv.config({ path: resolve(process.cwd(), '.env.local') });
+
+import { createPool } from '@vercel/postgres';
 import { questions } from './src/lib/placeholder-data.mjs';
+
+const pool = createPool({
+    connectionString: process.env.DATABASE_URL,
+});
 
 /**
  * @function seed
@@ -10,12 +19,12 @@ import { questions } from './src/lib/placeholder-data.mjs';
  */
 async function seed() {
   // Deleta a tabela 'answers' se ela existir
-  await sql`DROP TABLE IF EXISTS answers;`;
+  await pool.sql`DROP TABLE IF EXISTS answers;`;
   // Deleta a tabela 'questions' se ela existir
-  await sql`DROP TABLE IF EXISTS questions;`;
+  await pool.sql`DROP TABLE IF EXISTS questions;`;
 
   // Cria a tabela 'questions'
-  await sql`
+  await pool.sql`
     CREATE TABLE questions (
       id SERIAL PRIMARY KEY,
       text TEXT NOT NULL,
@@ -24,7 +33,7 @@ async function seed() {
   `;
 
   // Cria a tabela 'answers' com uma chave estrangeira para a tabela 'questions'
-  await sql`
+  await pool.sql`
     CREATE TABLE answers (
       id SERIAL PRIMARY KEY,
       question_id INTEGER REFERENCES questions(id),
@@ -35,7 +44,7 @@ async function seed() {
 
   // Insere as perguntas no banco de dados e depois insere as respostas correspondentes
   for (const question of questions) {
-    const { rows: insertedQuestions } = await sql`
+    const { rows: insertedQuestions } = await pool.sql`
       INSERT INTO questions (text, emoji) 
       VALUES (${question.text}, ${question.emoji})
       RETURNING id;
@@ -43,17 +52,25 @@ async function seed() {
     const questionId = insertedQuestions[0].id;
 
     for (const answer of question.answers) {
-      await sql`
+      await pool.sql`
         INSERT INTO answers (question_id, text, is_correct)
         VALUES (${questionId}, ${answer.text}, ${answer.is_correct});
       `;
     }
   }
-
-  console.log('Database seeded successfully!');
 }
 
 // Executa a função seed e trata possíveis erros
-seed().catch((err) => {
-  console.error('An error occurred while seeding the database:', err);
-});
+async function runSeed() {
+  try {
+    await seed();
+    console.log('Database seeded successfully!');
+  } catch (err) {
+    console.error('An error occurred while seeding the database:', err);
+  } finally {
+    await pool.end();
+    console.log('Database pool has been closed.');
+  }
+}
+
+runSeed();

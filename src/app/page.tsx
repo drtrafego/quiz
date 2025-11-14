@@ -1,155 +1,143 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState, useEffect, useCallback } from "react";
+import Image from 'next/image';
+import { useState } from 'react';
+import { questions } from '../lib/placeholder-data';
 
-/**
- * @interface Answer
- * @description Define a estrutura de um objeto de resposta.
- */
-interface Answer {
-  id: number;
-  text: string;
-  is_correct: boolean;
-}
-
-/**
- * @interface Question
- * @description Define a estrutura de um objeto de pergunta, incluindo um array de respostas.
- */
-interface Question {
-  id: number;
-  text: string;
-  emoji: string;
-  answers: Answer[];
-}
-
-/**
- * @component Home
- * @description Componente principal que renderiza a página do quiz.
- * Gerencia o estado do quiz, busca as perguntas da API e lida com a interação do usuário.
- */
-export default function Home() {
-  // Estado para armazenar as perguntas do quiz
-  const [questions, setQuestions] = useState<Question[]>([]);
-  // Estado para rastrear o índice da pergunta atual
+export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  // Estado para armazenar a resposta selecionada pelo usuário
-  const [selectedAnswer, setSelectedAnswer] = useState<Answer | null>(null);
-  // Estado para a pontuação do usuário
-  const [score, setScore] = useState(0);
-  // Estado para controlar se o quiz foi finalizado
-  const [quizFinished, setQuizFinished] = useState(false);
+  const [userAnswers, setUserAnswers] = useState<number[]>([]);
+  const [isQuizComplete, setIsQuizComplete] = useState(false);
+  const [showLeadForm, setShowLeadForm] = useState(false);
+  const [leadData, setLeadData] = useState({ name: '', email: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /**
-   * @function useEffect
-   * @description Hook que busca as perguntas do quiz da API quando o componente é montado.
-   */
-  useEffect(() => {
-    fetch("/api/quiz")
-      .then((res) => res.json())
-      .then((data) => setQuestions(data));
-  }, []);
-
-  /**
-   * @function handleAnswerSelect
-   * @description Callback para lidar com a seleção de uma resposta pelo usuário.
-   * @param {Answer} answer - O objeto da resposta selecionada.
-   */
-  const handleAnswerSelect = useCallback((answer: Answer) => {
-    setSelectedAnswer(answer);
-  }, []);
-
-  /**
-   * @function handleNextQuestion
-   * @description Callback para processar a resposta e avançar para a próxima pergunta ou finalizar o quiz.
-   */
-  const handleNextQuestion = useCallback(() => {
-    if (selectedAnswer) {
-      // Incrementa a pontuação se a resposta estiver correta
-      if (selectedAnswer.is_correct) {
-        setScore((prev) => prev + 1);
-      }
-
-      const nextQuestionIndex = currentQuestionIndex + 1;
-      // Verifica se ainda há perguntas restantes
-      if (nextQuestionIndex < questions.length) {
-        setCurrentQuestionIndex(nextQuestionIndex);
-        setSelectedAnswer(null); // Reseta a resposta selecionada
-      } else {
-        // Finaliza o quiz se não houver mais perguntas
-        setQuizFinished(true);
-      }
+  const handleAnswer = (answerIndex: number) => {
+    setUserAnswers([...userAnswers, answerIndex]);
+    const nextQuestion = currentQuestionIndex + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestionIndex(nextQuestion);
+    } else {
+      setIsQuizComplete(true);
+      setShowLeadForm(true);
     }
-  }, [currentQuestionIndex, questions.length, selectedAnswer]);
+  };
 
-  /**
-   * @function restartQuiz
-   * @description Callback para reiniciar o quiz, resetando todos os estados.
-   */
-  const restartQuiz = useCallback(() => {
-    setCurrentQuestionIndex(0);
-    setSelectedAnswer(null);
-    setScore(0);
-    setQuizFinished(false);
-  }, []);
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  // Renderiza a tela de finalização do quiz
-  if (quizFinished) {
+    try {
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...leadData, answers: userAnswers }),
+      });
+
+      if (response.ok) {
+        // Redireciona para a página de resultados
+        window.location.href = '/results';
+      } else {
+        alert('Ocurrió un error al enviar tus datos. Inténtalo de nuevo.');
+      }
+    } catch (error) {
+      console.error('Falha ao enviar o lead:', error);
+      alert('Ocurrió un error de conexión. Verifique sua internet e tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (showLeadForm) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-center">Quiz Finalizado!</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            <p className="text-lg mb-4">Sua pontuação final é: {score} de {questions.length}</p>
-            <Button onClick={restartQuiz}>Reiniciar Quiz</Button>
-          </CardContent>
-        </Card>
-      </main>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans">
+        <div className="p-8 bg-gray-800/50 rounded-2xl shadow-2xl text-center w-full max-w-lg mx-4 border border-purple-700">
+          <h2 className="text-3xl font-bold mb-4 text-yellow-300">Estás a un paso de redescubrirte.</h2>
+          <p className="mb-8 text-lg text-gray-300">Deja tu nombre y correo electrónico para recibir acceso a tu diagnóstico y al <span className="font-bold text-teal-400">Método Despertar Natural</span>.</p>
+          <form onSubmit={handleLeadSubmit} className="flex flex-col gap-6">
+            <input
+              type="text"
+              placeholder="Tu nombre"
+              value={leadData.name}
+              onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
+              required
+              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+            />
+            <input
+              type="email"
+              placeholder="Tu mejor correo electrónico"
+              value={leadData.email}
+              onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
+              required
+              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+            />
+            <button
+              type="submit"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-lg text-xl disabled:bg-gray-500 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Enviando...' : 'QUIERO MI DIAGNÓSTICO'}
+            </button>
+          </form>
+        </div>
+      </div>
     );
   }
 
-  // Renderiza uma mensagem de carregamento enquanto as perguntas são buscadas
-  if (questions.length === 0) {
+  if (!questions || questions.length === 0) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <p>Carregando quiz...</p>
-      </main>
-    );
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <p className="text-lg text-gray-400">Cargando tu viaje...</p>
+        </div>
+    )
   }
 
   const currentQuestion = questions[currentQuestionIndex];
+  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
-  // Renderiza a pergunta atual e as opções de resposta
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center">Quiz sobre Jejum Intermitente</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="mb-4">
-            <p className="text-lg">{currentQuestion.emoji} {currentQuestion.text}</p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans">
+      <div className="w-full max-w-3xl">
+        <div className="w-full bg-gray-700 rounded-full h-2.5 mb-6 shadow-inner">
+          <div className="bg-teal-400 h-2.5 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
+        </div>
+
+        <div className="bg-gray-800/50 rounded-2xl shadow-2xl overflow-hidden border border-purple-700">
+          {currentQuestion.image_url && (
+            <div className="w-full flex justify-center items-center overflow-hidden my-4">
+              <Image
+                  src={currentQuestion.image_url}
+                  alt="Imagen que representa la pregunta del cuestionario"
+                  width={500}
+                  height={288}
+                  className="rounded-lg"
+              />
+            </div>
+          )}
+          <div className="p-8 sm:p-10">
+            <h2 className="text-3xl font-bold mb-4 text-white text-center">{currentQuestion.text}</h2>
+            {currentQuestion.subtitle && (
+              <p className="text-lg text-gray-300 mb-8 text-center">{currentQuestion.subtitle}</p>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {currentQuestion.answers.map((answer, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleAnswer(index)}
+                  className="bg-gray-800 hover:bg-gray-700 border-2 border-teal-500 text-teal-300 font-semibold py-4 px-6 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75"
+                >
+                  {answer.text}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col space-y-2">
-            {currentQuestion.answers.map((answer) => (
-              <Button
-                key={answer.id}
-                variant={selectedAnswer?.id === answer.id ? "default" : "outline"}
-                onClick={() => handleAnswerSelect(answer)}
-              >
-                {answer.text}
-              </Button>
-            ))}
-          </div>
-          <Button className="w-full mt-4" onClick={handleNextQuestion} disabled={!selectedAnswer}>
-            Responder
-          </Button>
-        </CardContent>
-      </Card>
-    </main>
+        </div>
+        <footer className="text-center mt-8 text-gray-500 text-sm">
+          <p>Jornada Despertar Natural</p>
+        </footer>
+      </div>
+    </div>
   );
 }

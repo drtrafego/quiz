@@ -1,116 +1,50 @@
-# 📝 Quiz sobre Jejum Intermitente
+# Funil de Quiz Interativo para Qualificação de Leads
 
-Este projeto é uma aplicação web interativa em formato de quiz, desenvolvida para testar e educar os usuários sobre o tema do jejum intermitente. A aplicação foi construída com as mais modernas tecnologias web, focando em performance, escalabilidade e uma excelente experiência de usuário.
+## 1. Visão e Objetivo do Projeto
 
-## ✨ Funcionalidades
+Este projeto tem como objetivo principal desenvolver um **funil de quiz interativo** de alta performance, inspirado na abordagem e no design da plataforma `inlead.digital`. O foco não é apenas criar um quiz, mas sim uma ferramenta estratégica de marketing para **qualificar leads**, guiando o usuário por uma jornada envolvente que culmina na captura de seus dados de contato.
 
-- **Quiz Interativo:** Os usuários podem responder a uma série de perguntas de múltipla escolha com uma interface limpa e intuitiva.
-- **Feedback Imediato:** O sistema valida a resposta do usuário em tempo real.
-- **Pontuação Final:** Ao final do quiz, a pontuação total é exibida de forma clara.
-- **Design Moderno e Responsivo:** A interface se adapta a qualquer tamanho de tela, construída com Tailwind CSS e shadcn/ui.
-- **Emojis Visuais:** Cada pergunta é acompanhada de um emoji para tornar a experiência mais dinâmica e divertida.
+Nossa meta é transformar o tráfego em leads qualificados, oferecendo uma experiência de usuário fluida, visualmente rica e otimizada para a conversão.
 
-## 🚀 Tecnologias em Detalhe
+## 2. Inspiração de Layout: inlead.digital
 
-Este projeto utiliza um stack de tecnologias moderno e robusto para garantir a melhor performance e manutenibilidade.
+Nossa referência de design e experiência do usuário é o `inlead.digital`. Isso se traduz nos seguintes princípios de layout:
 
-- **Next.js:** Framework React escolhido por sua capacidade de renderização no lado do servidor (SSR) e geração de sites estáticos (SSG), o que garante um carregamento inicial rápido e ótimo SEO.
-- **TypeScript:** Adiciona segurança e robustez ao código JavaScript através da tipagem estática, prevenindo erros comuns em tempo de desenvolvimento.
-- **Neon:** Uma plataforma de banco de dados PostgreSQL *serverless* que oferece escalabilidade automática, custos otimizados e um generoso plano gratuito, ideal para projetos modernos.
-- **Tailwind CSS:** Um framework CSS *utility-first* que permite a construção de designs customizados de forma rápida e eficiente, sem sair do HTML.
-- **shadcn/ui:** Uma coleção de componentes de UI acessíveis e reutilizáveis que aceleram o desenvolvimento da interface, garantindo consistência visual e qualidade.
-- **Vercel:** A plataforma de deploy oficial do Next.js, oferecendo uma integração perfeita, deploys automáticos via Git e uma infraestrutura global de alta performance.
+-   **Design Limpo e Moderno:** Uma interface sem distrações, com foco total na pergunta e nas opções de resposta.
+-   **Layout em Cartão Centrado:** O quiz será apresentado em um componente de cartão no centro da tela, criando um ponto focal claro.
+-   **Visualmente Rico:** Cada pergunta será acompanhada por uma imagem de alta qualidade que adiciona contexto e apelo visual.
+-   **Experiência Fluida:** Transições suaves entre as perguntas e uma barra de progresso clara para manter o usuário engajado e ciente de sua posição no funil.
 
-## ⚙️ Como Funciona
+## 3. Plano de Desenvolvimento
 
-A aplicação segue um fluxo de dados claro e eficiente:
+O projeto será executado em fases claras e sequenciais para garantir organização e foco.
 
-1.  **Carregamento da Página:** Quando o usuário acessa a página, o componente principal em `src/app/page.tsx` é renderizado.
-2.  **Busca de Dados:** O componente utiliza o hook `useEffect` para fazer uma requisição à API interna no endpoint `/api/quiz`.
-3.  **API Endpoint:** A rota da API, localizada em `src/app/api/quiz/route.ts`, recebe a requisição, se conecta ao banco de dados Neon e busca todas as perguntas e suas respectivas respostas.
-4.  **Renderização do Quiz:** Os dados retornados pela API são armazenados no estado do componente React usando `useState`. A aplicação então renderiza a primeira pergunta e suas opções de resposta.
-5.  **Interação do Usuário:** O usuário seleciona uma resposta. A aplicação armazena a resposta selecionada e, ao clicar em "Responder", calcula a pontuação, avança para a próxima pergunta ou finaliza o quiz.
-6.  **Fim do Quiz:** Ao responder todas as perguntas, a pontuação final é exibida e o usuário tem a opção de reiniciar o quiz.
+-   **Fase 1: Documentação e Visão (Concluída)**
+    -   Reescrita do `README.md` para servir como a documentação central do projeto, detalhando a visão, o plano e a inspiração.
 
-## 📂 Estrutura do Projeto
+-   **Fase 2: Estrutura de Dados e Interface (UI/UX)**
+    -   **Estrutura de Dados:** Redefinir a estrutura de dados em `src/lib/placeholder-data.mjs` para suportar um quiz visual, com campos para `id`, `text`, `image_url` e `answers`.
+    -   **Desenvolvimento da Interface:** Construir a interface do quiz (`page.tsx`) com base nos princípios de design do `inlead.digital`.
 
-A estrutura de pastas foi organizada para garantir a separação de responsabilidades e facilitar a manutenção.
+-   **Fase 3: Captura de Leads**
+    -   **Formulário de Captura:** Implementar um formulário ao final do quiz para capturar o nome e o e-mail do usuário.
+    -   **API de Leads:** Criar um endpoint de API (`/api/leads`) para receber e, futuramente, armazenar os dados do formulário.
 
-```
-/
-├── .env.local          # Arquivo para variáveis de ambiente (não versionado)
-├── next.config.mjs     # Configurações do Next.js
-├── package.json        # Dependências e scripts do projeto
-├── seed.mjs            # Script para popular o banco de dados com perguntas e respostas
-├── src/
-│   ├── app/
-│   │   ├── api/quiz/
-│   │   │   └── route.ts    # Rota da API que busca os dados do quiz no banco de dados
-│   │   ├── globals.css   # Estilos globais da aplicação
-│   │   ├── layout.tsx    # Layout principal que envolve todas as páginas
-│   │   └── page.tsx      # Componente da página inicial que contém toda a lógica do quiz
-│   ├── components/ui/    # Componentes de UI reutilizáveis (gerados pelo shadcn/ui)
-│   └── lib/
-│       ├── db.ts         # Configuração da conexão com o banco de dados Neon
-│       ├── placeholder-data.mjs # Dados brutos (perguntas/respostas) para o script de seed
-│       └── utils.ts      # Funções utilitárias (ex: cn para classes do Tailwind)
-└── tsconfig.json       # Configurações do TypeScript
-```
+-   **Fase 4: Banco de Dados e Finalização**
+    -   **Script de Banco de Dados:** Atualizar o `seed.mjs` para popular o banco de dados com as perguntas do quiz.
+    -   **Integração:** Conectar a API do quiz ao banco de dados para buscar as perguntas dinamicamente.
 
-## 🛠️ Executando Localmente
+## 4. Estrutura do Projeto e Tecnologias
 
-Siga os passos abaixo para configurar e executar o projeto em seu ambiente local.
+-   **Next.js:** Framework React para renderização no lado do servidor.
+-   **TypeScript:** Para um código mais robusto e seguro.
+-   **Tailwind CSS:** Para estilização rápida e customizável.
+-   **Vercel/Postgres:** Para o banco de dados.
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone <URL_DO_REPOSITORIO>
-    cd <NOME_DO_DIRETORIO>
-    ```
+## 5. Como Executar Localmente
 
-2.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
-
-3.  **Configure o Banco de Dados:**
-    - Crie uma conta gratuita no [Neon](https://neon.tech/).
-    - Crie um novo projeto e obtenha a string de conexão do seu banco de dados PostgreSQL.
-    - Crie um arquivo `.env.local` na raiz do projeto e adicione sua string de conexão:
-      ```
-      DATABASE_URL="<SUA_STRING_DE_CONEXAO_DO_NEON>"
-      ```
-
-4.  **Popule o Banco de Dados:**
-    Execute o script de *seed* para criar as tabelas e inserir as perguntas e respostas iniciais.
-    ```bash
-    node seed.mjs
-    ```
-    *Nota: Este comando usa `node` diretamente. Se preferir, adicione `"db:seed": "node seed.mjs"` aos scripts do seu `package.json`.*
-
-5.  **Inicie o servidor de desenvolvimento:**
-    ```bash
-    npm run dev
-    ```
-
-6.  Abra [http://localhost:3000](http://localhost:3000) (ou a porta indicada no terminal) em seu navegador para ver o resultado.
-
-## 📜 Scripts Disponíveis
-
-- `npm run dev`: Inicia o servidor de desenvolvimento em modo de observação.
-- `npm run build`: Gera a build de produção otimizada da aplicação.
-- `npm run start`: Inicia um servidor de produção a partir da build gerada.
-- `npm run lint`: Executa o linter (ESLint) para analisar o código em busca de problemas.
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Se você tem alguma ideia para melhorar o projeto, siga os passos:
-
-1.  Faça um *fork* do projeto.
-2.  Crie uma nova *branch* (`git checkout -b feature/nova-funcionalidade`).
-3.  Faça suas alterações e *commits* (`git commit -m 'Adiciona nova funcionalidade'`).
-4.  Faça o *push* para a *branch* (`git push origin feature/nova-funcionalidade`).
-5.  Abra um *Pull Request*.
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
+1.  **Clone o repositório.**
+2.  **Instale as dependências:** `npm install`
+3.  **Configure as variáveis de ambiente:** Crie um arquivo `.env.local` e adicione sua `DATABASE_URL`.
+4.  **Popule o banco de dados (quando aplicável):** `node seed.mjs`
+5.  **Inicie o servidor:** `npm run dev`

@@ -1,58 +1,105 @@
-/**
- * @constant questions
- * @description Um array de objetos que representa os dados do quiz.
- * Cada objeto de pergunta contém o texto da pergunta, um emoji associado e um array de respostas.
- * Cada objeto de resposta contém o texto da resposta e um booleano indicando se é a resposta correta.
- */
 export const questions = [
   {
-    text: 'O que é jejum intermitente?',
-    emoji: '🤔',
+    text: '¿Cuál es tu principal objetivo al iniciar el ayuno intermitente?',
+    subtitle: 'Esto nos ayuda a personalizar tu experiencia.',
+    image_url: '/pregunta-1.png',
     answers: [
-      { text: 'Um tipo de dieta onde você só come sobremesas.', is_correct: false },
-      { text: 'Um padrão alimentar que alterna entre períodos de jejum e alimentação.', is_correct: true },
-      { text: 'Um jejum de 24 horas uma vez por mês.', is_correct: false },
-      { text: 'Comer apenas alimentos líquidos.', is_correct: false },
+      { text: 'Pérdida de peso' },
+      { text: 'Mejorar la salud general' },
+      { text: 'Aumentar los niveles de energía' },
+      { text: 'Mejorar la salud metabólica (sensibilidad a la insulina, etc.)' },
     ],
   },
   {
-    text: 'Qual destes é um método popular de jejum intermitente?',
-    emoji: ' popular',
+    text: '¿Cuál es tu experiencia previa con el ayuno intermitente?',
+    subtitle: 'Selecciona la opción que mejor describa tu viaje hasta ahora.',
+    image_url: null,
     answers: [
-      { text: 'O método 16/8.', is_correct: true },
-      { text: 'A dieta do sorvete.', is_correct: false },
-      { text: 'Comer a cada 2 horas.', is_correct: false },
-      { text: 'A dieta da sopa de repolho.', is_correct: false },
+      { text: 'Soy principiante, nunca he practicado antes' },
+      { text: 'Lo he intentado por mi cuenta, pero sin un plan' },
+      { text: 'Practico de vez en cuado, pero sin consistencia' },
+      { text: 'Ya he practicado y quiero retomarlo con un plan estructurado' },
     ],
   },
   {
-    text: 'Quais são os potenciais benefícios do jejum intermitente?',
-    emoji: '💪',
+    text: '¿Con qué frecuencia realizas ejercicio físico?',
+    subtitle: 'Tu actividad física es un componente clave.',
+    image_url: '/pregunta-3.png',
     answers: [
-      { text: 'Perda de peso e melhora da sensibilidade à insulina.', is_correct: true },
-      { text: 'Ganho de peso rápido.', is_correct: false },
-      { text: 'Aumento dos níveis de açúcar no sangue.', is_correct: false },
-      { text: 'Redução da energia.', is_correct: false },
-    ],
-  },
-    {
-    text: 'Durante o período de jejum no método 16/8, o que é geralmente permitido consumir?',
-    emoji: '💧',
-    answers: [
-      { text: 'Qualquer tipo de comida em pequenas porções.', is_correct: false },
-      { text: 'Apenas shakes de proteína.', is_correct: false },
-      { text: 'Água, café e chá sem açúcar.', is_correct: true },
-      { text: 'Sucos de frutas e refrigerantes diet.', is_correct: false },
+      { text: 'Sedentario (casi ningún ejercicio)' },
+      { text: 'Ligeramente activo (caminatas, 1-2 veces por semana)' },
+      { text: 'Moderadamente activo (ejercicio 3-4 veces por semana)' },
+      { text: 'Muy activo (ejercicio intenso, 5-7 veces por semana)' },
     ],
   },
   {
-    text: 'O jejum intermitente é recomendado para todos?',
-    emoji: '👨‍⚕️',
+    text: '¿Cómo calificarías tu nivel de estrés diario?',
+    subtitle: 'El estrés puede afectar tus resultados.',
+    image_url: null,
     answers: [
-      { text: 'Sim, é seguro e eficaz para qualquer pessoa.', is_correct: false },
-      { text: 'Não, pessoas com certas condições médicas ou grávidas devem evitá-lo.', is_correct: true },
-      { text: 'Sim, mas apenas para atletas de alta performance.', is_correct: false },
-      { text: 'Apenas para pessoas que querem ganhar massa muscular.', is_correct: false },
+      { text: 'Bajo, generalmente me siento relajado' },
+      { text: 'Moderado, tengo picos de estrés durante el día' },
+      { text: 'Alto, me siento estresado la mayor parte del tiempo' },
+      { text: 'Muy alto, me siento constantemente abrumado' },
+    ],
+  },
+  {
+    text: '¿Cómo describirías tus hábitos de sueño?',
+    subtitle: 'Un sueño de calidad es crucial para el éxito del ayuno.',
+    image_url: '/pregunta-5.png',
+    answers: [
+      { text: 'Duermo bien, de 7 a 9 horas por noche' },
+      { text: 'Razonable, pero me despierto algunas veces' },
+      { text: 'Irregular, duermo en horarios variados' },
+      { text: 'Muy malo, tengo insomnio o duermo muy poco' },
+    ],
+  },
+  {
+    text: '¿Tienes alguna restricción alimentaria o prefieres algún tipo de dieta?',
+    subtitle: 'Esto nos ayudará a adaptar las recomendaciones.',
+    image_url: null,
+    answers: [
+      { text: 'Ninguna restricción, como de todo' },
+      { text: 'Vegetariana' },
+      { text: 'Vegana' },
+      { text: 'Baja en carbohidratos/Cetogénica' },
+      { text: 'Sin gluten' },
+      { text: 'Sin lactosa' },
+      { text: 'Otra' },
+    ],
+  },
+  {
+    text: '¿Cuál es tu nivel de conocimiento sobre el ayuno intermitente?',
+    subtitle: 'Esto nos ayuda a definir el punto de partida.',
+    image_url: '/pregunta-7.png',
+    answers: [
+      { text: 'Ninguno, estoy empezando de cero' },
+      { text: 'Básico, he leído algunos artículos' },
+      { text: 'Intermedio, entiendo los conceptos principales' },
+      { text: 'Avanzado, he estudiado bastante sobre el tema' },
+    ],
+  },
+  {
+    text: '¿Tienes alguna condición de salud preexistente?',
+    subtitle:
+      'Es importante para asegurar que el programa sea seguro para ti. (Ej: diabetes, problemas cardíacos, etc.)',
+    image_url: null,
+    answers: [
+      { text: 'No, gozo de buena salud' },
+      { text: 'Sí, tengo una condición que requiere seguimiento' },
+      { text: 'No estoy seguro' },
+      { text: 'Prefiero no responder' },
+    ],
+  },
+  {
+    text: '¿Qué esperas lograr con nuestro programa de ayuno intermitente?',
+    subtitle: 'Saber tus metas nos ayuda a crear el mejor plan para ti.',
+    image_url: '/pregunta-9.png',
+    answers: [
+      { text: 'Pérdida de peso sostenible' },
+      { text: 'Mejora de la claridad mental y el enfoque' },
+      { text: 'Aumento de la disposición y la energía' },
+      { text: 'Reeducación alimentaria y un estilo de vida más saludable' },
     ],
   },
 ];
