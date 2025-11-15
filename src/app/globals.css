@@ -64,5 +64,18 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Estilos para o componente de telefone */
+    .PhoneInputInput {
+      @apply bg-transparent text-white border-none outline-none w-full;
+    }
+    .PhoneInputCountry {
+      @apply bg-gray-800 p-2 rounded-l-lg;
+    }
+    .PhoneInputCountrySelect {
+      @apply bg-gray-800 text-white;
+    }
+    .PhoneInputCountrySelect-option {
+      @apply bg-gray-800 text-white;
+    }
   }
 }

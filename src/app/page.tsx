@@ -1,15 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { questions } from '../lib/placeholder-data.mjs';
+import 'react-phone-number-input/style.css';
+import PhoneInput, { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { CountryCode } from 'libphonenumber-js/core';
+
+
+
 
 export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [isQuizComplete, setIsQuizComplete] = useState(false);
   const [showLeadForm, setShowLeadForm] = useState(false);
-  const [leadData, setLeadData] = useState({ name: '', email: '' });
+  const [leadData, setLeadData] = useState({ name: '' });
+  const [phone, setPhone] = useState<string | undefined>();
+  const [userCountry, setUserCountry] = useState<CountryCode>('US');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (showLeadForm) {
+      fetch('/api/geoip')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.country) {
+            setUserCountry(data.country as CountryCode);
+          }
+        });
+    }
+  }, [showLeadForm]);
 
   const handleAnswer = (answerIndex: number) => {
     setUserAnswers([...userAnswers, answerIndex]);
@@ -24,6 +44,12 @@ export default function QuizPage() {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!phone || !isPossiblePhoneNumber(phone)) {
+      alert('Por favor, insira um número de telefone válido.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -32,18 +58,18 @@ export default function QuizPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...leadData, answers: userAnswers }),
+        body: JSON.stringify({ ...leadData, phone, answers: userAnswers }),
       });
 
       if (response.ok) {
-        // Redireciona para a página de resultados
-        window.location.href = '/results';
+        alert('Diagnóstico enviado! Verifique seu telefone para os próximos passos.');
+        // Opcional: redirecionar ou mostrar uma mensagem de agradecimento permanente
       } else {
-        alert('Ocurrió un error al enviar tus datos. Inténtalo de nuevo.');
+        alert('Ocorreu um erro ao enviar seus dados. Tente novamente.');
       }
     } catch (error) {
       console.error('Falha ao enviar o lead:', error);
-      alert('Ocurrió un error de conexión. Verifique sua internet e tente novamente.');
+      alert('Ocorreu um erro de conexão. Verifique sua internet e tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -54,7 +80,7 @@ export default function QuizPage() {
       <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans">
         <div className="p-8 bg-gray-800/50 rounded-2xl shadow-2xl text-center w-full max-w-lg mx-4 border border-purple-700">
           <h2 className="text-3xl font-bold mb-4 text-yellow-300">Estás a un paso de redescubrirte.</h2>
-          <p className="mb-8 text-lg text-gray-300">Deja tu nombre y correo electrónico para recibir acceso a tu diagnóstico y al <span className="font-bold text-teal-400">Método Despertar Natural</span>.</p>
+          <p className="mb-8 text-lg text-gray-300">Deja tu nombre y teléfono para recibir acceso a tu diagnóstico y al <span className="font-bold text-teal-400">Método Despertar Natural</span>.</p>
           <form onSubmit={handleLeadSubmit} className="flex flex-col gap-6">
             <input
               type="text"
@@ -64,13 +90,14 @@ export default function QuizPage() {
               required
               className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
             />
-            <input
-              type="email"
-              placeholder="Tu mejor correo electrónico"
-              value={leadData.email}
-              onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
-              required
+            <PhoneInput
+              international
+              countryCallingCodeEditable={false}
+              defaultCountry={userCountry}
+              value={phone}
+              onChange={setPhone}
               className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              
             />
             <button
               type="submit"
