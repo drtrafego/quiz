@@ -88,7 +88,7 @@ export default function QuizPage() {
               value={leadData.name}
               onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
               required
-              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
             />
             <PhoneInput
               international
@@ -96,8 +96,11 @@ export default function QuizPage() {
               defaultCountry={userCountry}
               value={phone}
               onChange={setPhone}
-              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
-              
+
+              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
+              inputProps={{
+                className: "text-white placeholder:text-gray-400",
+              }}
             />
             <button
               type="submit"

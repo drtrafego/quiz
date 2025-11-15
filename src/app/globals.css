@@ -66,7 +66,10 @@
     @apply bg-background text-foreground;
     /* Estilos para o componente de telefone */
     .PhoneInputInput {
-      @apply bg-transparent text-white border-none outline-none w-full;
+      @apply bg-transparent border-none outline-none w-full;
+    }
+    .PhoneInputInput::placeholder {
+      color: #6c757d !important;
     }
     .PhoneInputCountry {
       @apply bg-gray-800 p-2 rounded-l-lg;
