@@ -20,6 +20,7 @@ export default function QuizPage() {
   // New state management from user's plan
   const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
   const [placeholder, setPlaceholder] = useState<string>('');
+  const [rawCountry, setRawCountry] = useState('');
 
   // 1) Effect to generate placeholder when country changes
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function QuizPage() {
         .then((res) => res.json())
         .then((data) => {
           if (data.country) {
+            setRawCountry(data.country);
             setCountry(data.country.toUpperCase() as CountryCode);
           }
         })
@@ -94,6 +96,12 @@ export default function QuizPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans">
         <div className="p-8 bg-gray-800/50 rounded-2xl shadow-2xl text-center w-full max-w-lg mx-4 border border-purple-700">
+          <div className="text-white text-xs text-left bg-red-900 p-2 rounded mb-4">
+            <p>DEBUG INFO:</p>
+            <p>- Raw Country from Vercel: {rawCountry || 'Not found'}</p>
+            <p>- Processed Country (Upper): {country}</p>
+            <p>- Generated Placeholder: {placeholder || 'EMPTY'}</p>
+          </div>
           <h2 className="text-3xl font-bold mb-4 text-yellow-300">Estás a un paso de redescubrirte.</h2>
           <p className="mb-8 text-lg text-gray-300">Deja tu nombre y teléfono para recibir acceso a tu diagnóstico y al <span className="font-bold text-teal-400">Método Despertar Natural</span>.</p>
           <form onSubmit={handleLeadSubmit} className="flex flex-col gap-6">
