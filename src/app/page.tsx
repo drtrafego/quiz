@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 import { questions } from '../lib/placeholder-data.mjs';
 
@@ -98,8 +97,8 @@ export default function QuizPage() {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans">
-      <div className="w-full max-w-3xl">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
+      <div className="w-full max-w-2xl mx-auto">
         <div className="w-full bg-gray-700 rounded-full h-2.5 mb-6 shadow-inner">
           <div className="bg-teal-400 h-2.5 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
         </div>
@@ -107,11 +106,11 @@ export default function QuizPage() {
         <div className="bg-gray-800/50 rounded-2xl shadow-2xl overflow-hidden border border-purple-700">
           {currentQuestion.image_url && (
             <div className="w-full flex justify-center items-center overflow-hidden my-4">
-              <Image
+              <img
                   src={currentQuestion.image_url}
                   alt="Imagen que representa la pregunta del cuestionario"
-                  width={500}
-                  height={288}
+                  width="500"
+                  height="288"
                   className="rounded-lg"
               />
             </div>
