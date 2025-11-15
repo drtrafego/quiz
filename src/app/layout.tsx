@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={`${inter.className} bg-gray-900 text-white`}>
         {children}
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} gtmScriptUrl="https://www.googletagmanager.com/gtm.js" />
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
       </body>
       <Script id="fb-pixel" strategy="afterInteractive">
         {`

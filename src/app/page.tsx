@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import { questions } from '../lib/placeholder-data.mjs';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { getExampleNumber } from 'libphonenumber-js';
 import { CountryCode } from 'libphonenumber-js/core';
-
-
-
+import examples from 'libphonenumber-js/mobile/examples';
 
 export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -16,17 +15,34 @@ export default function QuizPage() {
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [leadData, setLeadData] = useState({ name: '' });
   const [phone, setPhone] = useState<string | undefined>();
-  const [userCountry, setUserCountry] = useState<CountryCode>('US');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // New state management from user's plan
+  const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
+  const [placeholder, setPlaceholder] = useState<string>('');
 
+  // 1) Effect to generate placeholder when country changes
+  useEffect(() => {
+    const example = getExampleNumber(country, examples);
+    if (example) {
+      setPlaceholder(example.formatNational());
+    } else {
+      setPlaceholder('');
+    }
+  }, [country]);
+
+  // 2) Effect to fetch GeoIP, but only when the form is shown
   useEffect(() => {
     if (showLeadForm) {
       fetch('/api/geoip')
         .then((res) => res.json())
         .then((data) => {
           if (data.country) {
-            setUserCountry(data.country as CountryCode);
+            setCountry(data.country as CountryCode);
           }
+        })
+        .catch(() => {
+          // Keep fallback 'BR' on error
         });
     }
   }, [showLeadForm]);
@@ -63,7 +79,6 @@ export default function QuizPage() {
 
       if (response.ok) {
         alert('Diagnóstico enviado! Verifique seu telefone para os próximos passos.');
-        // Opcional: redirecionar ou mostrar uma mensagem de agradecimento permanente
       } else {
         alert('Ocorreu um erro ao enviar seus dados. Tente novamente.');
       }
@@ -90,18 +105,17 @@ export default function QuizPage() {
               required
               className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
             />
-            <PhoneInput
-              international
-              countryCallingCodeEditable={false}
-              defaultCountry={userCountry}
-              value={phone}
-              onChange={setPhone}
-
-              className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
-              inputProps={{
-                className: "text-white placeholder:text-gray-400",
-              }}
-            />
+            <div className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus-within:ring-2 focus-within:ring-teal-500 focus-within:border-transparent transition">
+              <PhoneInput
+                international
+                defaultCountry={country}
+                value={phone}
+                onChange={setPhone}
+              />
+              <p className="text-xs text-gray-400 mt-1 text-left">
+                Exemplo: {placeholder || 'Digite seu telefone'}
+              </p>
+            </div>
             <button
               type="submit"
               className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-lg text-xl disabled:bg-gray-500 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50"

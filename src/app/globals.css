@@ -68,9 +68,7 @@
     .PhoneInputInput {
       @apply bg-transparent border-none outline-none w-full;
     }
-    .PhoneInputInput::placeholder {
-      color: #6c757d !important;
-    }
+
     .PhoneInputCountry {
       @apply bg-gray-800 p-2 rounded-l-lg;
     }
@@ -81,4 +79,31 @@
       @apply bg-gray-800 text-white;
     }
   }
+}
+
+/* INPUT interno do react-phone-number-input */
+.PhoneInputInput {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: #f9fafb; /* texto digitado */
+}
+
+/* garante que o placeholder é visível */
+.PhoneInputInput::placeholder {
+  opacity: 1 !important;
+  color: #9ca3af !important;
+}
+
+.PhoneInputInput::-webkit-input-placeholder,
+.PhoneInputInput::-moz-placeholder,
+.PhoneInputInput:-ms-input-placeholder {
+  opacity: 1 !important;
+  color: #9ca3af !important;
+}
+
+/* tiro de canhão global, se precisar */
+input::placeholder {
+  opacity: 1 !important;
 }
