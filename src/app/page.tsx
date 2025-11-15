@@ -38,7 +38,7 @@ export default function QuizPage() {
         .then((res) => res.json())
         .then((data) => {
           if (data.country) {
-            setCountry(data.country as CountryCode);
+            setCountry(data.country.toUpperCase() as CountryCode);
           }
         })
         .catch(() => {
