@@ -20,7 +20,7 @@ export default function QuizPage() {
   // New state management from user's plan
   const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
   const [placeholder, setPlaceholder] = useState<string>('');
-  const [rawCountry, setRawCountry] = useState('');
+  const [rawCountry, setRawCountry] = useState(''); // Raw country from Vercel
 
   // 1) Effect to generate placeholder when country changes
   useEffect(() => {
