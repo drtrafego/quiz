@@ -9,6 +9,13 @@ import { getExampleNumber } from 'libphonenumber-js';
 import { CountryCode } from 'libphonenumber-js/core';
 import examples from 'libphonenumber-js/mobile/examples';
 
+// Helper function to push to dataLayer
+const pushToDataLayer = (event: string, data: object = {}) => {
+  if (typeof window !== 'undefined' && window.dataLayer) {
+    window.dataLayer.push({ event, ...data });
+  }
+};
+
 export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
@@ -17,7 +24,7 @@ export default function QuizPage() {
   const [leadData, setLeadData] = useState({ name: '' });
   const [phone, setPhone] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showOfferPage, setShowOfferPage] = useState(true);
+  const [showOfferPage, setShowOfferPage] = useState(false);
   
   // New state management from user's plan
   const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
@@ -50,6 +57,19 @@ export default function QuizPage() {
         });
     }
   }, [showLeadForm]);
+
+  // Effect to track quiz questions for GTM
+  useEffect(() => {
+    // Question 1 (index 0)
+    if (currentQuestionIndex === 0) {
+      pushToDataLayer('quiz_question_1');
+    }
+
+    // Question 6 (index 5)
+    if (currentQuestionIndex === 5) {
+      pushToDataLayer('quiz_question_6');
+    }
+  }, [currentQuestionIndex]);
 
   if (showOfferPage) {
     return (
@@ -215,7 +235,7 @@ export default function QuizPage() {
                 onChange={setPhone}
               />
               <p className="text-xs text-gray-400 mt-1 text-left">
-                Exemplo: {placeholder || 'Digite seu telefone'}
+                Ejemplo: {placeholder || 'Digite seu telefone'}
               </p>
             </div>
             <button
