@@ -73,7 +73,7 @@ export default function QuizPage() {
                   rel="noopener noreferrer"
                   className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50 animate-bounce"
                 >
-                  SÍ, QUIERO EMPEZAR MI TRANSFORMACIÓN HOY POR 14,80 DÓLARES
+                  SÍ, QUIERO EMPEZAR MI TRANSFORMACIÓN HOY
                 </a>
             </div>
           </div>
@@ -115,7 +115,7 @@ export default function QuizPage() {
           <div className="relative rounded-2xl p-px bg-gradient-to-b from-teal-400 to-green-500 shadow-xl shadow-teal-500/20 mb-8">
             <div className="bg-gray-800/80 rounded-[15px] p-8">
                 <h3 className="text-3xl font-bold text-teal-400 mb-6 text-center">🌸 Y lo más importante…</h3>
-                <p className="text-center text-gray-300 mb-6">Este producto no es un PDF. Es una herramienta de transformación diaria que va a enseñarte:</p>
+                <p className="text-center text-gray-300 mb-6">Es una herramienta de transformación diaria que va a enseñarte:</p>
                 <ul className="space-y-4 text-lg text-left">
                   <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo bajar de peso sin sufrir</li>
                   <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo controlar la ansiedad y la inflamación</li>
@@ -135,7 +135,7 @@ export default function QuizPage() {
               rel="noopener noreferrer"
               className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50 animate-pulse"
             >
-              SÍ, QUIERO EMPEZAR MI TRANSFORMACIÓN HOY POR 14,80 DÓLARES
+              SÍ, QUIERO EMPEZAR MI TRANSFORMACIÓN HOY
             </a>
           </div>
 
