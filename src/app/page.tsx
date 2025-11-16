@@ -17,7 +17,7 @@ export default function QuizPage() {
   const [leadData, setLeadData] = useState({ name: '' });
   const [phone, setPhone] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showOfferPage, setShowOfferPage] = useState(false);
+  const [showOfferPage, setShowOfferPage] = useState(true);
   
   // New state management from user's plan
   const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
@@ -141,7 +141,7 @@ export default function QuizPage() {
 
         </div>
         <footer className="text-center mt-8 text-gray-500 text-sm">
-          <p>Jornada Despertar Natural</p>
+          <p>Método Despertar Natural</p>
         </footer>
       </div>
     );
@@ -281,7 +281,7 @@ export default function QuizPage() {
           </div>
         </div>
         <footer className="text-center mt-8 text-gray-500 text-sm">
-          <p>Jornada Despertar Natural</p>
+          <p>Método Despertar Natural</p>
         </footer>
       </div>
     </div>
