@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { questions } from '../lib/placeholder-data.mjs';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isPossiblePhoneNumber } from 'react-phone-number-input';
@@ -16,6 +17,7 @@ export default function QuizPage() {
   const [leadData, setLeadData] = useState({ name: '' });
   const [phone, setPhone] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showOfferPage, setShowOfferPage] = useState(false);
   
   // New state management from user's plan
   const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
@@ -49,6 +51,102 @@ export default function QuizPage() {
     }
   }, [showLeadForm]);
 
+  if (showOfferPage) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans bg-gray-900 text-white">
+        <div className="w-full max-w-4xl mx-auto">
+          
+          {/* Card Principal da Oferta */}
+          <div className="relative rounded-2xl p-px bg-gradient-to-b from-purple-500 to-teal-500 shadow-2xl shadow-purple-500/20 mb-8">
+            <div className="bg-gray-800/80 rounded-[15px] p-8 text-center">
+                <h2 className="text-4xl font-bold mb-4 text-yellow-300">🔥 Tu nuevo comienzo empieza aquí 🔥</h2>
+                <p className="text-xl text-gray-300 mb-6">Accede al <span className="font-bold text-teal-400">Método Despertar Natural</span> con una oferta única.</p>
+                
+                <div className="my-8 p-6 bg-gray-900 rounded-lg border border-gray-700">
+                  <p className="text-2xl text-gray-400 line-through">Precio original: 59,70</p>
+                  <p className="text-5xl font-bold text-teal-400 animate-pulse">Hoy por solo: 14,80 dólares</p>
+                </div>
+
+                <a 
+                  href="https://pay.hotmart.com/A102891357R?off=onro6ham"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50 animate-bounce"
+                >
+                  SÍ, QUIERO EMPEZAR MI TRANSFORMACIÓN HOY POR 14,80 DÓLARES
+                </a>
+            </div>
+          </div>
+
+          {/* Card de Detalhes do Investimento */}
+          <div className="relative rounded-2xl p-px bg-gradient-to-b from-purple-500 to-teal-500 shadow-xl shadow-teal-500/10 mb-8">
+            <div className="bg-gray-800/80 rounded-[15px] p-8">
+                <h3 className="text-3xl font-bold text-white mb-6 text-center">💡 ¿Cuánto representa eso en tu vida real?</h3>
+                <div className="flex flex-col sm:flex-row justify-around text-center gap-8 sm:gap-0">
+                  <div>
+                    <p className="text-4xl font-bold text-teal-400">1,23 / mes</p>
+                    <p className="text-gray-400">Menos que un café barato.</p>
+                  </div>
+                  <div>
+                    <p className="text-4xl font-bold text-teal-400">0,04 / día</p>
+                    <p className="text-gray-400">Para recuperar tu cuerpo y energía.</p>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          {/* Card do Custo de Não Mudar */}
+          <div className="relative rounded-2xl p-px bg-gradient-to-b from-red-500 to-orange-500 shadow-xl shadow-red-500/20 mb-8">
+            <div className="bg-gray-800/80 rounded-[15px] p-8">
+                <h3 className="text-3xl font-bold text-red-400 mb-6 text-center">🌿 El costo de NO cambiar…</h3>
+                <p className="text-center text-gray-400 mb-6">Si no tomas acción hoy, estos son los gastos invisibles que tu cuerpo y tu bolsillo pagan todos los meses:</p>
+                <ul className="space-y-4 text-lg text-left">
+                  <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><div><span className="font-bold">Ansiedad:</span> Snacks, dulces y “antojos” por nerviosismo: <span className="font-semibold text-white">20–60/mes</span></div></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><div><span className="font-bold">Inflamación y dolor digestivo:</span> Antiácidos, tés especiales, probióticos, medicamentos: <span className="font-semibold text-white">30–80/mes</span></div></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><div><span className="font-bold">Cansancio crónico y falta de energía:</span> Vitaminas, café extra, bebidas energéticas: <span className="font-semibold text-white">40–100/mes</span></div></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><div><span className="font-bold">Consultas médicas por síntomas derivados del estrés metabólico:</span> Gastroenterólogo, endocrinólogo o nutricionista: <span className="font-semibold text-white">80–200 por consulta</span></div></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><div><span className="font-bold">Exámenes (cuando el cuerpo “da señales”):</span> Ultrasonidos, hormonas, análisis completos: <span className="font-semibold text-white">150–300</span></div></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-3">❌</span><div><span className="font-bold">Autoestima baja:</span> Comer por ansiedad, comprar ropa para “disimular”, sentirse mal con el espejo. <span className="font-semibold text-white">No tiene precio… pero te cuesta energía, alegría y vida.</span></div></li>
+                </ul>
+            </div>
+          </div>
+
+          {/* Card da Transformação */}
+          <div className="relative rounded-2xl p-px bg-gradient-to-b from-teal-400 to-green-500 shadow-xl shadow-teal-500/20 mb-8">
+            <div className="bg-gray-800/80 rounded-[15px] p-8">
+                <h3 className="text-3xl font-bold text-teal-400 mb-6 text-center">🌸 Y lo más importante…</h3>
+                <p className="text-center text-gray-300 mb-6">Este producto no es un PDF. Es una herramienta de transformación diaria que va a enseñarte:</p>
+                <ul className="space-y-4 text-lg text-left">
+                  <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo bajar de peso sin sufrir</li>
+                  <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo controlar la ansiedad y la inflamación</li>
+                  <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo volver a sentirte liviana</li>
+                  <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo conectar con tu cuerpo</li>
+                  <li className="flex items-center"><span className="text-teal-400 mr-3">✨</span> Cómo recuperar tu autoestima y seguridad</li>
+                </ul>
+                 <p className="text-center text-gray-300 mt-6">Todo eso por cuatro centavos al día.</p>
+            </div>
+          </div>
+
+          {/* CTA Final */}
+          <div className="text-center">
+            <a 
+              href="https://pay.hotmart.com/A102891357R?off=onro6ham"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50 animate-pulse"
+            >
+              SÍ, QUIERO EMPEZAR MI TRANSFORMACIÓN HOY POR 14,80 DÓLARES
+            </a>
+          </div>
+
+        </div>
+        <footer className="text-center mt-8 text-gray-500 text-sm">
+          <p>Jornada Despertar Natural</p>
+        </footer>
+      </div>
+    );
+  }
+
   const handleAnswer = (answerIndex: number) => {
     setUserAnswers([...userAnswers, answerIndex]);
     const nextQuestion = currentQuestionIndex + 1;
@@ -80,7 +178,8 @@ export default function QuizPage() {
       });
 
       if (response.ok) {
-        alert('Diagnóstico enviado! Verifique seu telefone para os próximos passos.');
+        setShowLeadForm(false); // Esconde o formulário
+        setShowOfferPage(true); // Mostra a página de oferta
       } else {
         alert('Ocorreu um erro ao enviar seus dados. Tente novamente.');
       }
@@ -153,12 +252,13 @@ export default function QuizPage() {
         <div className="bg-gray-800/50 rounded-2xl shadow-2xl overflow-hidden border border-purple-700">
           {currentQuestion.image_url && (
             <div className="w-full flex justify-center items-center overflow-hidden my-4">
-              <img
+              <Image
                   src={currentQuestion.image_url}
                   alt="Imagen que representa la pregunta del cuestionario"
-                  width="500"
-                  height="288"
+                  width={500}
+                  height={288}
                   className="rounded-lg"
+                  priority // Opcional: para imagens LCP
               />
             </div>
           )}
