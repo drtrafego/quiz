@@ -178,7 +178,7 @@ export default function QuizPage() {
                 </div>
 
                 <a 
-                  href="https://pay.hotmart.com/A102891357R?off=onro6ham"
+                  href="https://pay.hotmart.com/A102891357R?checkoutMode=10"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50 animate-bounce"
@@ -236,7 +236,7 @@ export default function QuizPage() {
 
           <div className="text-center">
             <a 
-              href="https://pay.hotmart.com/A102891357R?off=onro6ham"
+              href="https://pay.hotmart.com/A102891357R?checkoutMode=10"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50 animate-pulse"
