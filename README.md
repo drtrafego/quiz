@@ -27,7 +27,7 @@ O projeto será executado em fases claras e sequenciais para garantir organizaç
     -   **Desenvolvimento da Interface:** Construir a interface do quiz (`page.tsx`) com base nos princípios de design do `inlead.digital`.
 
 -   **Fase 3: Captura de Leads**
-    -   **Formulário de Captura:** Implementar um formulário ao final do quiz para capturar o nome e o e-mail do usuário.
+    -   **Formulário de Captura:** Implementar um formulário ao final do quiz para capturar o nome e o telefone do usuário.
     -   **API de Leads:** Criar um endpoint de API (`/api/leads`) para receber e, futuramente, armazenar os dados do formulário.
 
 -   **Fase 4: Banco de Dados e Finalização**

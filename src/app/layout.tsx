@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleTagManager } from '@next/third-parties/google';
+import { GTMPageView } from '@/components/GTMPageView';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${inter.className} bg-gray-900 text-white`}>
-        {children}
+                <Suspense>
+          <GTMPageView />
+          {children}
+        </Suspense>
         <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} gtmScriptUrl="https://www.googletagmanager.com/gtm.js" />
       </body>
     </html>
