@@ -64,6 +64,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 85%;
+
     /* Estilos para o componente de telefone */
     .PhoneInputInput {
       @apply bg-transparent border-none outline-none w-full;
@@ -77,6 +79,12 @@
     }
     .PhoneInputCountrySelect-option {
       @apply bg-gray-800 text-white;
+    }
+  }
+
+  @media (max-width: 768px) {
+    img {
+      zoom: 90%;
     }
   }
 }
