@@ -12,8 +12,7 @@ export const questions = [
   },
   {
     text: '¿Qué suele ser lo más difícil para ti al intentar bajar de peso?',
-    subtitle: 'Revela los puntos de dolor que el método soluciona.',
-    image_url: null,
+        image_url: null,
     answers: [
       { text: 'Mantener la constancia sin sentir hambre.' },
       { text: 'Evitar la inflamación o retención de líquidos.' },
@@ -23,8 +22,7 @@ export const questions = [
   },
   {
     text: 'Cuando piensas en tu cuerpo, ¿qué es lo que más te gustaría recuperar?',
-    subtitle: 'Conecta emoción + resultado deseado.',
-    image_url: '/pregunta-3.png',
+        image_url: '/pregunta-3.png',
     answers: [
       { text: 'Mi cintura y sensación de ligereza.' },
       { text: 'Mi energía estable durante el día.' },
@@ -34,8 +32,7 @@ export const questions = [
   },
   {
     text: '¿Con cuál de estas frases te identificas más?',
-    subtitle: 'Reconoce que necesitas un enfoque distinto.',
-    image_url: null,
+        image_url: null,
     answers: [
       { text: 'He probado de todo y nada me funciona.' },
       { text: 'Siento que mi cuerpo está inflamado o “lento”.' },
@@ -45,8 +42,7 @@ export const questions = [
   },
     {
     text: '¿Sabías que el ayuno intermitente puede ser amable y equilibrado?',
-    subtitle: 'Despierta curiosidad por el método y rompe mitos.',
-    image_url: '/pregunta-5.png',
+        image_url: '/pregunta-5.png',
     answers: [
       { text: 'No, pensé que era pasar hambre.' },
       { text: 'Sí, pero no sé cómo hacerlo bien.' },
@@ -56,8 +52,7 @@ export const questions = [
   },
   {
     text: '¿Qué resultado te gustaría ver en las próximas 4 semanas?',
-    subtitle: 'Opcional',
-    image_url: null,
+        image_url: null,
     answers: [
       { text: 'Bajar de peso sin sacrificio.' },
       { text: 'Desinflamarme y sentirme más liviana.' },
@@ -67,8 +62,7 @@ export const questions = [
   },
   {
     text: '¿Qué palabra describe mejor tu propósito hoy?',
-    subtitle: 'Opcional',
-    image_url: '/pregunta-7.png',
+        image_url: '/pregunta-7.png',
     answers: [
       { text: 'Renovar' },
       { text: 'Equilibrar' },
