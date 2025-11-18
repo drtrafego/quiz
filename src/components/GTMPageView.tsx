@@ -7,7 +7,7 @@ export function GTMPageView() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname) {
+    if (pathname && window.dataLayer) {
       window.dataLayer.push({
         event: "pageview",
         page: pathname,
