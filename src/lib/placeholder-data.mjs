@@ -2,7 +2,7 @@ export const questions = [
   {
     text: '¿Cómo describirías tu relación con la comida actualmente?',
     subtitle: '👉 Responde estas simples preguntas y descubre qué tipo de “descanso corporal” necesita tu cuerpo para volver a quemar grasa, recuperar energía y sentirte liviana sin dietas ni culpa.',
-    image_url: '/pregunta-3.png',
+    image_url: '/pregunta-1.png',
     answers: [
       { text: '🩷 Como una lucha constante, entre ansiedad y culpa.' },
       { text: '💛 Trato de cuidarme, pero a veces pierdo el control.' },
@@ -24,7 +24,7 @@ export const questions = [
   {
     text: 'Cuando piensas en tu cuerpo, ¿qué es lo que más te gustaría recuperar?',
     subtitle: 'Conecta emoción + resultado deseado.',
-    image_url: '/pregunta-1.png',
+    image_url: '/pregunta-3.png',
     answers: [
       { text: 'Mi cintura y sensación de ligereza.' },
       { text: 'Mi energía estable durante el día.' },
