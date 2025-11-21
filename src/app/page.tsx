@@ -20,11 +20,13 @@ export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [isQuizComplete, setIsQuizComplete] = useState(false);
-  const [showResultPage, setShowResultPage] = useState(false);
+  const [showDiagnosis, setShowDiagnosis] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [leadData, setLeadData] = useState({ name: '' });
   const [phone, setPhone] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showOfferPage, setShowOfferPage] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   
   const [country, setCountry] = useState<CountryCode>('BR'); // fallback to BR
   const [placeholder, setPlaceholder] = useState<string>('');
@@ -40,7 +42,7 @@ export default function QuizPage() {
   }, [country]);
 
   useEffect(() => {
-    if (showResultPage) {
+    if (showForm) {
       fetch('/api/geoip')
         .then((res) => res.json())
         .then((data) => {
@@ -53,7 +55,7 @@ export default function QuizPage() {
           // Keep fallback 'BR' on error
         });
     }
-  }, [showResultPage]);
+  }, [showForm]);
 
   useEffect(() => {
     if (currentQuestionIndex === 0) {
@@ -69,10 +71,20 @@ export default function QuizPage() {
     setUserAnswers([...userAnswers, answerIndex]);
     const nextQuestion = currentQuestionIndex + 1;
     if (nextQuestion < questions.length) {
-      setCurrentQuestionIndex(nextQuestion);
+      const nextQuestionData = questions[nextQuestion];
+      if (nextQuestionData.isTestimonial) {
+        // Mostra a página de testemunho e avança para a próxima pergunta real depois
+        setCurrentQuestionIndex(nextQuestion);
+        setTimeout(() => {
+          setUserAnswers([...userAnswers, -1]); // Adiciona uma resposta "dummy" para o testemunho
+          setCurrentQuestionIndex(nextQuestion + 1);
+        }, 5000); // Mostra o testemunho por 5 segundos
+      } else {
+        setCurrentQuestionIndex(nextQuestion);
+      }
     } else {
       setIsQuizComplete(true);
-      setShowResultPage(true);
+      setShowDiagnosis(true);
     }
   };
 
@@ -96,7 +108,7 @@ export default function QuizPage() {
       });
 
       if (response.ok) {
-        setShowResultPage(false);
+        setShowForm(false);
         setShowOfferPage(true);
       } else {
         alert('Ocorreu um erro ao enviar seus dados. Tente novamente.');
@@ -109,58 +121,123 @@ export default function QuizPage() {
     }
   };
 
-  if (showResultPage) {
+
+  if (showIntro) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans bg-gray-900 text-white">
         <div className="p-8 bg-gray-800/50 rounded-2xl shadow-2xl text-center w-full max-w-2xl mx-4 border border-purple-700">
-          
-          <div className="mb-8">
-            <h2 className="text-4xl font-bold mb-4 text-yellow-300">✨ ¡Tu cuerpo te está pidiendo una pausa consciente!</h2>
-            <p className="text-xl text-gray-300">
-              Los síntomas que mencionaste son señales claras de que tu metabolismo necesita descansar para volver a funcionar como antes.
-            </p>
-            <p className="text-xl text-gray-300 mt-4">
-              No se trata de dejar de comer, sino de enseñarle a tu cuerpo a pausar, limpiarse y recuperar su ritmo natural.
-            </p>
-          </div>
-
-          <div className="mt-10">
-            <h3 className="text-3xl font-bold mb-4 text-yellow-300">Estás a un paso de redescubrirte.</h3>
-            <p className="mb-8 text-lg text-gray-300">Deja tu nombre y teléfono para recibir acceso a tu diagnóstico y al <span className="font-bold text-teal-400">Método Despertar Natural</span>.</p>
-            <form onSubmit={handleLeadSubmit} className="flex flex-col gap-6 max-w-lg mx-auto">
-              <input
-                type="text"
-                placeholder="Tu nombre"
-                value={leadData.name}
-                onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
-                required
-                className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition"
-              />
-              <div className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus-within:ring-2 focus-within:ring-teal-500 focus-within:border-transparent transition">
-                <PhoneInput
-                  international
-                  defaultCountry={country}
-                  value={phone}
-                  onChange={setPhone}
-                />
-                <p className="text-xs text-gray-400 mt-1 text-left">
-                  Ejemplo: {placeholder || 'Digite seu telefone'}
-                </p>
-              </div>
-              <button
-                type="submit"
-                className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-lg text-xl disabled:bg-gray-500 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Enviando...' : 'QUIERO MI DIAGNÓSTICO'}
-              </button>
-            </form>
-          </div>
-
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-yellow-300">Descubre cuántos centímetros podrías reducir de tu cintura sin dietas extremas.</h1>
+          <p className="text-xl text-gray-300 mb-8">Tu diagnóstico empieza ahora. Solo necesitas 2 minutos.</p>
+          <Image
+            src={"/Imagem-pag-1.png"}
+            alt="Imagen de introducción al cuestionario"
+            width={500}
+            height={288}
+            className="rounded-lg mb-8 mx-auto"
+            priority
+          />
+          <button
+            onClick={() => setShowIntro(false)}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50"
+          >
+            INICIAR TEST
+          </button>
         </div>
       </div>
     );
   }
+
+  if (showDiagnosis) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans bg-gray-900 text-white">
+        <div className="p-8 bg-gray-800/50 rounded-2xl shadow-2xl text-center w-full max-w-2xl mx-4 border border-purple-700">
+          <h2 className="text-4xl font-bold mb-4 text-yellow-300">✨ Tu resultado está listo.</h2>
+          <p className="text-xl text-gray-300">Tu cuerpo te está pidiendo una pausa consciente.</p>
+          <Image
+            src={"/Imagem-pag-13.png"}
+            alt="Imagen del diagnóstico"
+            width={500}
+            height={288}
+            className="rounded-lg my-8 mx-auto"
+            priority
+          />
+          <div className="text-left max-w-lg mx-auto">
+            <p className="text-lg text-gray-300 mb-4">Según tus respuestas, tu cuerpo muestra señales de:</p>
+            <ul className="space-y-2 mb-6">
+              <li className="flex items-center"><span className="text-red-400 mr-2">●</span> Inflamación interna</li>
+              <li className="flex items-center"><span className="text-red-400 mr-2">●</span> Cansancio metabólico</li>
+              <li className="flex items-center"><span className="text-red-400 mr-2">●</span> Ritmo hormonal desbalanceado</li>
+            </ul>
+            <p className="text-lg text-gray-300 mb-6">Esto explica por qué bajar de peso se te ha hecho tan difícil… y por qué no ves cambios aunque hagas “todo bien”.</p>
+            <div className="p-4 bg-green-900/50 border border-green-400 rounded-lg">
+              <p className="font-bold text-green-300">La buena noticia:</p>
+              <p className="text-gray-300">Tu caso responde muy bien a un método simple que ayuda a reducir centímetros de cintura, bajar inflamación y recuperar energía.</p>
+            </div>
+            <p className="text-lg text-gray-300 mt-6">👉 Para ver tu plan personalizado, necesitamos preparar tu diagnóstico final.</p>
+          </div>
+          <button
+            onClick={() => { setShowDiagnosis(false); setShowForm(true); }}
+            className="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-10 rounded-lg text-2xl transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-purple-500/50"
+          >
+            VER MI DIAGNÓSTICO
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (showForm) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans bg-gray-900 text-white">
+        <div className="w-full max-w-md p-8 bg-gray-800/50 rounded-2xl shadow-2xl border border-purple-700">
+          <h2 className="text-3xl font-bold text-center text-yellow-300 mb-6">✨ Tu plan personalizado está casi listo…</h2>
+          <form onSubmit={handleLeadSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-300 sr-only">Nombre</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={leadData.name}
+                onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
+                className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition w-full"
+                placeholder="Tu nombre"
+              />
+            </div>
+            <div className="p-4 bg-gray-900 border border-gray-700 rounded-lg text-lg focus-within:ring-2 focus-within:ring-teal-500 focus-within:border-transparent transition">
+              <PhoneInput
+                international
+                defaultCountry={country}
+                value={phone}
+                onChange={setPhone}
+                required
+              />
+               <p className="text-xs text-gray-400 mt-1 text-left">
+                  Ejemplo: {placeholder || 'Digite seu telefone'}
+                </p>
+            </div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-transform transform hover:scale-105"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Enviando...' : 'RECIBIR MI PLAN PERSONALIZADO'}
+            </button>
+          </form>
+        </div>
+        <div className="w-full max-w-md text-center mt-8">
+          <h3 className="text-xl font-bold text-yellow-300 mb-4">Ingresa tus datos para enviarte:</h3>
+          <ul className="text-gray-300 space-y-2 inline-block text-left">
+            <li className="flex items-center"><span className="text-green-400 mr-2">✔</span> Cuántos centímetros podrías reducir</li>
+            <li className="flex items-center"><span className="text-green-400 mr-2">✔</span> Qué está frenando tu descenso de peso</li>
+            <li className="flex items-center"><span className="text-green-400 mr-2">✔</span> Tu ruta inicial para empezar HOY</li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
 
   if (showOfferPage) {
     return (
@@ -262,10 +339,29 @@ export default function QuizPage() {
   }
 
   const currentQuestion = questions[currentQuestionIndex];
+
+  if (currentQuestion.isTestimonial) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans bg-gray-900 text-white">
+        <div className="p-8 bg-gray-800/50 rounded-2xl shadow-2xl text-center w-full max-w-2xl mx-4 border border-purple-700">
+          <h2 className="text-3xl font-bold mb-6 text-yellow-300">{currentQuestion.title}</h2>
+          <div className="space-y-8">
+            {currentQuestion.testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                <p className="text-lg text-gray-300 italic">{testimonial.text}</p>
+                <p className="text-right text-teal-400 font-semibold mt-4">- {testimonial.author}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4" style={{ zoom: 0.8 }}>
       <div className="w-full max-w-2xl mx-auto">
         <div className="w-full bg-gray-700 rounded-full h-2.5 mb-6 shadow-inner">
           <div className="bg-teal-400 h-2.5 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
