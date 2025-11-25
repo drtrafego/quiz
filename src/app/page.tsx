@@ -88,7 +88,7 @@ export default function QuizPage() {
     }
   };
 
-  const handleLeadSubmit = async (e: React.FormEvent) => {
+  const handleLeadSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!phone || !isPossiblePhoneNumber(phone)) {
@@ -98,27 +98,20 @@ export default function QuizPage() {
 
     setIsSubmitting(true);
 
-    try {
-      const response = await fetch('/api/leads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...leadData, phone, answers: userAnswers }),
-      });
+    // Redireciona para o checkout da Hotmart imediatamente
+    window.location.href = 'https://pay.hotmart.com/A102891357R?checkoutMode=10';
 
-      if (response.ok) {
-        setShowForm(false);
-        setShowOfferPage(true);
-      } else {
-        alert('Ocorreu um erro ao enviar seus dados. Tente novamente.');
-      }
-    } catch (error) {
-      console.error('Falha ao enviar o lead:', error);
-      alert('Ocorreu um erro de conexão. Verifique sua internet e tente novamente.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Envia os dados do lead em segundo plano, sem esperar pela resposta
+    fetch('/api/leads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...leadData, phone, answers: userAnswers }),
+    }).catch(error => {
+      // Apenas loga o erro no console, pois o usuário já foi redirecionado
+      console.error('Falha ao enviar o lead em segundo plano:', error);
+    });
   };
 
 
@@ -390,7 +383,7 @@ export default function QuizPage() {
                 <button
                   key={index}
                   onClick={() => handleAnswer(index)}
-                  className="bg-gray-800 hover:bg-gray-700 border-2 border-teal-500 text-teal-300 font-semibold py-4 px-6 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75"
+                  className="p-5 bg-gray-700/50 rounded-lg text-lg text-left font-medium hover:bg-purple-600 transition-all duration-300 ease-in-out border-2 border-transparent hover:border-purple-400 shadow-md hover:shadow-purple-500/50 transform hover:scale-105"
                 >
                   {answer.text}
                 </button>
@@ -398,9 +391,6 @@ export default function QuizPage() {
             </div>
           </div>
         </div>
-        <footer className="text-center mt-8 text-gray-500 text-sm">
-          <p>Método Despertar Natural</p>
-        </footer>
       </div>
     </div>
   );
