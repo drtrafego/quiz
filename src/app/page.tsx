@@ -381,7 +381,7 @@ export default function QuizPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {currentQuestion.answers.map((answer, index) => (
                 <button
-                  key={index}
+                  key={`${currentQuestionIndex}-${index}`}
                   onClick={() => handleAnswer(index)}
                   className="p-5 bg-gray-700/50 rounded-lg text-lg text-left font-medium hover:bg-purple-600 transition-all duration-300 ease-in-out border-2 border-transparent hover:border-purple-400 shadow-md hover:shadow-purple-500/50 transform hover:scale-105"
                 >

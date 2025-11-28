@@ -72,13 +72,16 @@
     }
 
     .PhoneInputCountry {
-      @apply bg-gray-800 p-2 rounded-l-lg;
+      @apply bg-transparent p-2 rounded-l-lg;
     }
     .PhoneInputCountrySelect {
-      @apply bg-gray-800 text-white;
+      @apply bg-white text-gray-900;
+    }
+    .PhoneInputCountrySelect-option:hover {
+      @apply bg-gray-100;
     }
     .PhoneInputCountrySelect-option {
-      @apply bg-gray-800 text-white;
+      @apply bg-white text-gray-900;
     }
   }
 
